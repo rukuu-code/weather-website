@@ -117,7 +117,7 @@ export default function App() {
       <header className="border-b border-line">
         <div className="max-w-content mx-auto px-6 h-16 flex items-center justify-between">
           <p className="font-mono text-sm">
-            weather<span className="text-amber">.</span>app
+            nimbus<span className="text-amber">.</span>app
           </p>
           <button
             onClick={() => setUnit((u) => (u === 'C' ? 'F' : 'C'))}

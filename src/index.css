@@ -8,13 +8,18 @@ body {
 }
 
 ::selection {
-  background: #E8A33D;
-  color: #0B0D10;
+  background: #7C9CFF;
+  color: #0A0E1A;
 }
 
 *:focus-visible {
-  outline: 2px solid #E8A33D;
+  outline: 2px solid #7C9CFF;
   outline-offset: 3px;
+}
+
+.app-bg {
+  background: radial-gradient(ellipse at top, #141B33 0%, #0A0E1A 55%, #08090F 100%);
+  background-attachment: fixed;
 }
 
 @media (prefers-reduced-motion: reduce) {
