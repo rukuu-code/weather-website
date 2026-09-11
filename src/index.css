@@ -2,9 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-bg: #0A0E1A;
+  --color-bg2: #141B33;
+  --color-surface: #151B2E;
+  --color-line: #262E4A;
+  --color-ink: #E9ECF5;
+  --color-muted: #8890A8;
+  --color-accent: #7C9CFF;
+}
+
+.light {
+  --color-bg: #100e0b;
+  --color-bg2: #181613;
+  --color-surface: #1D1A16;
+  --color-line: #35312A;
+  --color-ink: #F3F1EB;
+  --color-muted: #A6A097;
+  --color-accent: #00D9FF;
+}
+
 body {
   font-family: 'Space Grotesk', sans-serif;
   -webkit-font-smoothing: antialiased;
+  background-color: var(--color-bg);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
@@ -17,14 +39,359 @@ body {
   outline-offset: 3px;
 }
 
-.app-bg {
-  background: radial-gradient(ellipse at top, #141B33 0%, #0A0E1A 55%, #08090F 100%);
-  background-attachment: fixed;
+/* =========================
+   AURORA BEAMS - DARK MODE
+   ========================= */
+
+.aura-bg {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
 }
+
+.aura-layer-1 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    55.8% 55.49% at 50% 100%,
+    rgb(38, 77, 76) 0%,
+    rgba(25, 48, 47, 0) 100%
+  );
+  mix-blend-mode: screen;
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.aura-layer-2 {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      100deg,
+      #262626 0%,
+      #262626 3%,
+      rgba(38, 38, 38, 0.7) 5%,
+      rgba(38, 38, 38, 0.7) 7%,
+      transparent 10%,
+      transparent 12%,
+      rgba(38, 38, 38, 0.7) 14%,
+      #262626 16%
+    ),
+    repeating-linear-gradient(
+      100deg,
+      #9ca3af 0%,
+      #9ca3af 1.5%,
+      rgba(156, 163, 175, 0.8) 2%,
+      #6b7280 3%,
+      #6b7280 4%,
+      rgba(156, 163, 175, 0.8) 4.5%,
+      #9ca3af 5%
+    );
+  background-size: 300% 200%;
+  mix-blend-mode: screen;
+  filter: blur(75px);
+  opacity: 0.9;
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.aura-layer-3 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 100% 100%,
+    #ffffff 20%,
+    #0a0a0a 80%
+  );
+  mix-blend-mode: multiply;
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.aura-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================
+   WEATHER SCENE
+   ========================= */
+
+.weather-scene {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* =========================
+   ANIMATIONS
+   ========================= */
+
+@keyframes drift {
+  from {
+    transform: translateX(-15%);
+  }
+
+  to {
+    transform: translateX(115%);
+  }
+}
+
+@keyframes fall {
+  from {
+    transform: translateY(-10vh);
+  }
+
+  to {
+    transform: translateY(110vh);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  92%,
+  100% {
+    opacity: 0;
+  }
+
+  93%,
+  96% {
+    opacity: 0.55;
+  }
+
+  94%,
+  97% {
+    opacity: 0;
+  }
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateX(6px) rotate(1deg);
+  }
+}
+
+/* =========================
+   REDUCED MOTION
+   ========================= */
 
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* =====================================================
+   AURORA BOREALIS - LIGHT MODE / NEBULA
+   ===================================================== */
+
+/* Base color */
+.light body {
+  background-color: #100e0b;
+}
+
+.light .aura-bg {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* =========================
+   Layer 1 - Screen
+   ========================= */
+
+.light .aura-layer-1 {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    154deg,
+    transparent 18%,
+    rgba(12, 72, 61, 0.06) 29%,
+    rgba(0, 229, 255, 0.40) 36%,
+    rgb(255, 255, 255) 42%,
+    rgba(73, 207, 158, 0.32) 48%,
+    rgba(38, 158, 119, 0.22) 55%,
+    rgba(0, 183, 255, 0.30) 62%,
+    rgba(15, 76, 65, 0.08) 68%,
+    transparent 82%
+  );
+
+  mix-blend-mode: screen;
+  filter: blur(122px);
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* =========================
+   Layer 2 - Screen
+   ========================= */
+
+.light .aura-layer-2 {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    128deg,
+    transparent 28%,
+    rgba(15, 82, 96, 0.06) 38%,
+    rgba(0, 183, 255, 0.35) 43%,
+    rgb(255, 255, 255) 48%,
+    rgba(68, 197, 185, 0.22) 52%,
+    rgba(0, 229, 255, 0.25) 57%,
+    rgba(25, 105, 112, 0.10) 62%,
+    transparent 76%
+  );
+
+  mix-blend-mode: screen;
+  filter: blur(108px);
+  opacity: 0.9;
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* =========================
+   Layer 3 - Screen
+   ========================= */
+
+.light .aura-layer-3 {
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    ellipse 78% 20% at 51% 53%,
+    rgba(65, 183, 155, 0.24) 0%,
+    rgba(30, 102, 91, 0.10) 45%,
+    transparent 82%
+  );
+
+  mix-blend-mode: screen;
+  filter: blur(101px);
+  opacity: 0.9;
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* =========================
+   Layer 4 - Screen
+   ========================= */
+
+.light .aura-layer-4 {
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    ellipse 48% 9% at 52% 50%,
+    rgba(190, 255, 226, 0.14) 0%,
+    rgba(91, 195, 163, 0.06) 45%,
+    transparent 80%
+  );
+
+  mix-blend-mode: screen;
+  filter: blur(252px);
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* =========================
+   Layer 5 - Multiply
+   ========================= */
+
+.light .aura-layer-5 {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to top,
+    rgba(1, 5, 13, 0.90) 0%,
+    rgba(2, 7, 16, 0.58) 28%,
+    rgba(3, 9, 20, 0.20) 55%,
+    transparent 78%
+  );
+
+  mix-blend-mode: multiply;
+  filter: blur(115px);
+  opacity: 0.9;
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* =========================
+   Layer 6 - Screen
+   ========================= */
+
+.light .aura-layer-6 {
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    ellipse 50% 28% at 72% 18%,
+    rgba(89, 62, 151, 0.10) 0%,
+    rgba(57, 44, 100, 0.04) 45%,
+    transparent 82%
+  );
+
+  mix-blend-mode: screen;
+  filter: blur(198px);
+  opacity: 0.7;
+  transform: translateZ(0);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* =========================
+   LIGHT MODE CONTENT
+   ========================= */
+
+.light .aura-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================
+   WEATHER SCENE - LIGHT MODE
+   ========================= */
+
+.light .weather-scene {
+  z-index: 0;
 }

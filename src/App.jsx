@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { WiStrongWind, WiHumidity, WiThermometer } from 'react-icons/wi'
 import { FaLocationDot, FaMagnifyingGlass } from 'react-icons/fa6'
 import { getWeatherInfo } from './weatherCodes.js'
@@ -23,6 +23,12 @@ export default function App() {
   const [place, setPlace] = useState(null)
   const [current, setCurrent] = useState(null)
   const [daily, setDaily] = useState([])
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark')
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('light', theme === 'light')
+    localStorage.setItem('theme', theme)
+  }, [theme])
 
   const fetchForecast = useCallback(async (lat, lon, label) => {
     setLoading(true)
@@ -113,20 +119,33 @@ export default function App() {
   const CurrentIcon = weatherInfo?.icon
 
   return (
-    <div className="min-h-screen bg-bg text-ink flex flex-col">
-      <header className="border-b border-line">
+    <div className="aura-bg min-h-screen flex flex-col">
+      <div className="aura-layer-1" />
+      <div className="aura-layer-2" />
+      <div className="aura-layer-3" />
+
+      <div className="aura-content flex flex-col min-h-screen text-ink">
+      <header className="border-b border-line bg-surface border">
         <div className="max-w-content mx-auto px-6 h-16 flex items-center justify-between">
           <p className="font-mono text-sm">
-            nimbus<span className="text-amber">.</span>app
-          </p>
-          <button
-            onClick={() => setUnit((u) => (u === 'C' ? 'F' : 'C'))}
-            className="font-mono text-xs border border-line rounded px-3 py-1.5 hover:border-amber hover:text-amber transition-colors"
-          >
-            &deg;{unit} &rarr; &deg;{unit === 'C' ? 'F' : 'C'}
-          </button>
-        </div>
-      </header>
+              nimbus<span className="text-amber">.</span>app
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+                className="font-mono text-xs border border-line rounded px-3 py-1.5 hover:border-amber hover:text-amber transition-colors"
+              >
+                {theme === 'dark' ? '\u2600\ufe0f Borealis' : '\ud83c\udf19 Beams'}
+              </button>
+              <button
+                onClick={() => setUnit((u) => (u === 'C' ? 'F' : 'C'))}
+                className="font-mono text-xs border border-line rounded px-3 py-1.5 hover:border-amber hover:text-amber transition-colors"
+              >
+                &deg;{unit} &rarr; &deg;{unit === 'C' ? 'F' : 'C'}
+              </button>
+            </div>
+          </div>
+        </header>
 
       <main className="max-w-content mx-auto w-full px-6 py-12 flex-1">
         <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
@@ -143,7 +162,7 @@ export default function App() {
           <div className="flex gap-3">
             <button
               type="submit"
-              className="font-mono text-sm bg-amber text-bg font-medium rounded px-5 py-3 hover:bg-[#f2b45c] transition-colors whitespace-nowrap"
+              className="fill border-line rounded px-4 py-3 bg-surface border hover:border-amber hover:text-amber transition-colors"
             >
               Search
             </button>
@@ -151,7 +170,7 @@ export default function App() {
               type="button"
               onClick={handleUseLocation}
               title="Use my location"
-              className="border border-line rounded px-4 py-3 hover:border-amber hover:text-amber transition-colors"
+              className="fill border-line rounded px-4 py-3 bg-surface border hover:border-amber hover:text-amber transition-colors"
             >
               <FaLocationDot className="text-sm" />
             </button>
@@ -175,12 +194,12 @@ export default function App() {
 
           {!loading && current && (
             <>
-              <div className="border border-line rounded-lg p-6 md:p-8">
+              <div className="fill bg-surface border border-line rounded-lg p-6 md:p-8">
                 <p className="font-mono text-xs text-muted mb-1">{place}</p>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-display text-6xl font-semibold leading-none">
-                      {displayTemp(current.temp)}&deg;
+                      {displayTemp(current.temp)}°{unit}
                     </p>
                     <p className="mt-2 text-muted">{weatherInfo.label}</p>
                   </div>
@@ -191,7 +210,7 @@ export default function App() {
                   <div className="flex flex-col items-start gap-1">
                     <WiThermometer className="text-2xl text-muted" />
                     <p className="font-mono text-xs text-muted">Feels like</p>
-                    <p className="text-ink">{displayTemp(current.feelsLike)}&deg;</p>
+                    <p className="text-ink">{displayTemp(current.feelsLike)}°{unit}</p>
                   </div>
                   <div className="flex flex-col items-start gap-1">
                     <WiHumidity className="text-2xl text-muted" />
@@ -213,12 +232,12 @@ export default function App() {
                   return (
                     <div
                       key={d.date}
-                      className="border border-line rounded-lg p-3 flex flex-col items-center gap-1.5 text-center"
+                      className="fill bg-surface border border-line rounded-lg p-3 flex flex-col items-center gap-1.5 text-center"
                     >
                       <p className="font-mono text-xs text-muted">{formatWeekday(d.date)}</p>
                       <Icon className="text-2xl text-amber" />
-                      <p className="text-sm text-ink">{displayTemp(d.max)}&deg;</p>
-                      <p className="text-xs text-muted">{displayTemp(d.min)}&deg;</p>
+                      <p className="text-sm text-ink">{displayTemp(d.max)}°{unit}</p>
+                      <p className="text-xs text-muted">{displayTemp(d.min)}°{unit}</p>
                     </div>
                   )
                 })}
@@ -233,6 +252,7 @@ export default function App() {
           Weather data from Open-Meteo &middot; built by Jason Cruz
         </p>
       </footer>
+      </div>
     </div>
   )
 }
