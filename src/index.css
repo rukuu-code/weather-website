@@ -134,11 +134,23 @@ body {
 
 @keyframes drift {
   from {
-    transform: translateX(-15%);
+    transform: translateX(-20vw);
   }
 
   to {
-    transform: translateX(115%);
+    transform: translateX(120vw);
+  }
+}
+
+@keyframes snowFall {
+  0% {
+    transform: translate(0, -10vh) rotate(0deg);
+  }
+  50% {
+    transform: translate(8px, 50vh) rotate(180deg);
+  }
+  100% {
+    transform: translate(0, 110vh) rotate(360deg);
   }
 }
 
@@ -202,17 +214,6 @@ body {
 
   50% {
     transform: translateX(6px) rotate(1deg);
-  }
-}
-
-/* =========================
-   REDUCED MOTION
-   ========================= */
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
   }
 }
 
